@@ -4,7 +4,6 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -30,9 +29,9 @@ public class BaseDriver {
             case "Android":
                 DesiredCapabilities androidCaps = new DesiredCapabilities();
                 androidCaps.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-                androidCaps.setCapability(MobileCapabilityType.VERSION, "");
+                androidCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, "");
                 androidCaps.setCapability(MobileCapabilityType.DEVICE_NAME, "");
-                androidCaps.setCapability(MobileCapabilityType.APP, "resources/playmaker-app-mobile-debug.apk");
+                androidCaps.setCapability(MobileCapabilityType.APP, "src/test/resources/playmaker-app-mobile-debug.apk");
                 // Add more desired capabilities as needed
 
                 // Start the Appium server and initialize the Android driver
@@ -48,7 +47,7 @@ public class BaseDriver {
                 iosCaps.setCapability(MobileCapabilityType.PLATFORM_NAME, "iOS");
                 iosCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, "");
                 iosCaps.setCapability(MobileCapabilityType.DEVICE_NAME, "");
-                iosCaps.setCapability(MobileCapabilityType.APP, "/path/to/your/app.ipa");
+                iosCaps.setCapability(MobileCapabilityType.APP, "src/test/resources/PlaymakerApp.ipa");
                 // Add more desired capabilities as needed
 
                 // Start the Appium server and initialize the iOS driver

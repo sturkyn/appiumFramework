@@ -40,18 +40,24 @@ public class BaseDriver {
                 androidCaps.setCapability(MobileCapabilityType.UDID, androidCaps.getCapability("udid").toString());
                 androidCaps.setCapability(MobileCapabilityType.DEVICE_NAME, androidCaps.getCapability("deviceName").toString());
                 androidCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, androidCaps.getCapability("platformVersion").toString());
+
                 break;
 
             case "iOS":
-                DesiredCapabilities iosCaps = new DesiredCapabilities();
-                iosCaps.setCapability(MobileCapabilityType.PLATFORM_NAME, "iOS");
-                iosCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, "");
-                iosCaps.setCapability(MobileCapabilityType.DEVICE_NAME, "");
-                iosCaps.setCapability(MobileCapabilityType.APP, "src/test/resources/PlaymakerApp.ipa");
+                DesiredCapabilities iOSCaps = new DesiredCapabilities();
+                iOSCaps.setCapability(MobileCapabilityType.PLATFORM_NAME, "iOS");
+                iOSCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, "");
+                iOSCaps.setCapability(MobileCapabilityType.DEVICE_NAME, "");
+                iOSCaps.setCapability(MobileCapabilityType.APP, "src/test/resources/PlaymakerApp.ipa");
                 // Add more desired capabilities as needed
 
                 // Start the Appium server and initialize the iOS driver
-                dr = new IOSDriver(new URL("http://0.0.0.0:4723/wd/hub"), iosCaps);
+                dr = new IOSDriver(new URL("http://0.0.0.0:4723/wd/hub"), iOSCaps);
+
+                iOSCaps.setCapability(MobileCapabilityType.UDID, iOSCaps.getCapability("udid").toString());
+                iOSCaps.setCapability(MobileCapabilityType.DEVICE_NAME, iOSCaps.getCapability("deviceName").toString());
+                iOSCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, iOSCaps.getCapability("platformVersion").toString());
+
                 break;
 
             case "Web":
@@ -76,14 +82,17 @@ public class BaseDriver {
                 WebDriverManager.chromedriver().setup();
                 dr = new ChromeDriver(options);
                 dr.manage().window().maximize();
+
                 break;
 
             case "Tizen":
                 //driver = new TizenDriver;
+
                 break;
 
             case "WebOS":
                 //driver = new WebOSDriver;
+
                 break;
 
         }

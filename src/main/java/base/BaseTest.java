@@ -33,8 +33,8 @@ public class BaseTest {
         return baseD.getDr();
     }
 
-    private static BaseDriver createDriver(String platformName, Long threadId) throws MalformedURLException {
-        BaseDriver baseD = new BaseDriver(platformName);
+    private static BaseDriver createDriver(String platformName, String browserName, Long threadId) throws MalformedURLException {
+        BaseDriver baseD = new BaseDriver(platformName, browserName);
         synchronized (threadSwitch) {
             threadSwitch.put(threadId, baseD);
         }
@@ -48,9 +48,10 @@ public class BaseTest {
     @BeforeMethod
     public void runOn() throws MalformedURLException {
         String platformName = PropertiesUtils.getProp("platformName");
-        Reporter.log("STARTING BROWSER -" + platformName);
+        String browserName = PropertiesUtils.getProp("browserName");
+        Reporter.log("STARTING INSTANCE - " + platformName + " " + browserName);
         //Config launching app
-        createDriver(platformName, Thread.currentThread().getId()); //launch browser using webdriver manager
+        createDriver(platformName, browserName, Thread.currentThread().getId()); //launch browser using webdriver manager
     }
 
     @BeforeMethod

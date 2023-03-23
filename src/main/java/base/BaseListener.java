@@ -1,5 +1,6 @@
 package base;
 
+import utils.log.Reporter;
 import io.qameta.allure.Attachment;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;

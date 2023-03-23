@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import utils.PropertiesUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,11 +16,13 @@ import java.net.URL;
 public class BaseDriver {
 
     private WebDriver dr;
-    private String platform = "Web";
+    private String platform = PropertiesUtils.getProp("platformName");
+    private String browser = PropertiesUtils.getProp("browserName");
     private boolean initiated = false;
 
-    public BaseDriver(String platformName) {
+    public BaseDriver(String platformName, String browserName) {
         this.platform = platformName;
+        this.browser = browserName;
     }
 
     public void initiateDriver() throws MalformedURLException {
@@ -37,9 +40,9 @@ public class BaseDriver {
                 // Start the Appium server and initialize the Android driver
                 dr = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), androidCaps);
 
-                androidCaps.setCapability(MobileCapabilityType.UDID, androidCaps.getCapability("udid").toString());
-                androidCaps.setCapability(MobileCapabilityType.DEVICE_NAME, androidCaps.getCapability("deviceName").toString());
-                androidCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, androidCaps.getCapability("platformVersion").toString());
+                androidCaps.setCapability("appium:udid", androidCaps.getCapability("udid").toString());
+                androidCaps.setCapability("appium:deviceName", androidCaps.getCapability("deviceName").toString());
+                androidCaps.setCapability("appium:platformVersion", androidCaps.getCapability("platformVersion").toString());
 
                 break;
 
@@ -54,39 +57,58 @@ public class BaseDriver {
                 // Start the Appium server and initialize the iOS driver
                 dr = new IOSDriver(new URL("http://0.0.0.0:4723/wd/hub"), iOSCaps);
 
-                iOSCaps.setCapability(MobileCapabilityType.UDID, iOSCaps.getCapability("udid").toString());
-                iOSCaps.setCapability(MobileCapabilityType.DEVICE_NAME, iOSCaps.getCapability("deviceName").toString());
-                iOSCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, iOSCaps.getCapability("platformVersion").toString());
+                iOSCaps.setCapability("appium:udid", iOSCaps.getCapability("udid").toString());
+                iOSCaps.setCapability("appium:deviceName", iOSCaps.getCapability("deviceName").toString());
+                iOSCaps.setCapability("appium:platformVersion", iOSCaps.getCapability("platformVersion").toString());
 
                 break;
 
             case "Web":
-            default:
-                ChromeOptions options = new ChromeOptions();
-                options.addArguments(
-                        "--lang=en",
-                        "--window-size=2000,1500",
-                        "--disable-extensions",
-                        "--disable-dev-shm-usage",
-                        "--verbose",
-                        "--disable-web-security",
-                        "--ignore-certificate-errors",
-                        "--allow-running-insecure-content",
-                        "--allow-insecure-localhost",
-                        "--no-sandbox",
-                        "--disable-gpu",
-                        "--headless"
-                );
+                switch(browser) {
+                    case "Chrome":
+                        ChromeOptions options = new ChromeOptions();
+                        options.addArguments(
+                                "--lang=en",
+                                "--window-size=2000,1500",
+                                "--disable-extensions",
+                                "--disable-dev-shm-usage",
+                                "--verbose",
+                                "--disable-web-security",
+                                "--ignore-certificate-errors",
+                                "--allow-running-insecure-content",
+                                "--allow-insecure-localhost",
+                                "--no-sandbox",
+                                "--disable-gpu",
+                                "--headless"
+                        );
 
-                options.addArguments("user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36");
-                WebDriverManager.chromedriver().setup();
-                dr = new ChromeDriver(options);
-                dr.manage().window().maximize();
+                        options.addArguments("user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36");
+                        WebDriverManager.chromedriver().setup();
+                        dr = new ChromeDriver(options);
+                        dr.manage().window().maximize();
 
-                break;
+                        break;
+
+                    case "Safari" :
+
+                        WebDriverManager.safaridriver().setup();
+
+                        break;
+
+                    case "Edge" :
+
+                        WebDriverManager.edgedriver().setup();
+
+                        break;
+
+                }
 
             case "Tizen":
-                //driver = new TizenDriver;
+                DesiredCapabilities tizenCaps = new DesiredCapabilities();
+                tizenCaps.setCapability("platformName", "TizenTV");
+                tizenCaps.setCapability("appium:automationName", "TizenTV");
+                tizenCaps.setCapability("appium:deviceName", "device-host:192.168.242.73");
+                tizenCaps.setCapability("appium:chromeDriverExecutable", "Users/sgunay/..");
 
                 break;
 
@@ -104,14 +126,6 @@ public class BaseDriver {
 
     public WebDriver getDr() {
         return dr;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
     }
 
 }

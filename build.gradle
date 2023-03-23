@@ -11,12 +11,20 @@ repositories {
 }
 
 dependencies {
+
+    //drivers
     implementation group: 'io.appium', name: 'java-client', version: '8.3.0'
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.6.0'
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.3.1'
+
+    //runners
     implementation group: 'org.testng', name: 'testng', version: '7.7.1'
+
+    //reporting
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
     implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.21.0'
+    implementation 'com.esotericsoftware:reflectasm:1.11.9'
+
 }
 
 test {
